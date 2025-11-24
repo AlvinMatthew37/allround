@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6">
+  <div class="p-6 flex flex-col items-center">
     <div class="theme-select hidden">
     </div>
     <h1 class="text-2xl font-bold mb-4 text-[var(--theme-title)]">
@@ -90,7 +90,7 @@
 
     <button
       @click="refresh(wordCount)"
-      class="px-4 py-2 text-[var(--theme-text)] hover:text-[var(--theme-title)] hover:bg-[#00000010] focus:outline-none focus:text-[var(--theme-title)] focus:bg-[#00000010] font-semibold rounded-lg transition mt-4"
+      class="px-4 py-2 text-[var(--theme-text)] hover:text-[var(--theme-title)] hover:bg-[#00000010] focus:outline-none focus:text-[var(--theme-title)] focus:bg-[#00000010] font-semibold rounded-lg transition mt-2"
     >
       <RefreshCcw class="w-8 h-8" />
     </button>
@@ -392,21 +392,21 @@ p {
 .game-container {
   min-width: 50%;
   max-width: 80%;
-  min-height: 250px;
+  height: fit-content;
   margin: 1rem auto;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .textbox {
-  font-size: 2rem;
-  line-height: 3rem; /* ✅ Explicit line height */
-  height: 13rem; /* ✅ 4 lines * 3rem */
+  font-size: 1.5rem;
+  line-height: 2.5rem; /* ✅ Explicit line height */
+  height: 10rem; /* ✅ 4 lines * 3rem */
   overflow: hidden; /* ✅ Hide overflow */
+  margin: 3rem 0;
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start; /* ✅ critical */
   column-gap: 0.5rem;
-  row-gap: 0.25rem;
   width: 100%;
   color: var(--theme-text);
   outline: none; /* Remove focus outline if any */
