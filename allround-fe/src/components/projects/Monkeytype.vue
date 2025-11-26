@@ -1,7 +1,6 @@
 <template>
   <div class="p-6 flex flex-col items-center">
-    <div class="theme-select hidden">
-    </div>
+    <div class="theme-select hidden"></div>
     <h1 class="text-2xl font-bold mb-4 text-[var(--theme-title)]">
       MONKEYTYPE
     </h1>
@@ -13,16 +12,35 @@
       <div class="h-6 w-1 rounded-lg bg-[#00000010] my-2"></div>
 
       <div class="mods">
-        <button @click="setWordCount(10)" :class="{ 'text-[var(--theme-text-done)]': wordCount === 10 }">10</button>
-        <button @click="setWordCount(25)" :class="{ 'text-[var(--theme-text-done)]': wordCount === 25 }">25</button>
-        <button @click="setWordCount(50)" :class="{ 'text-[var(--theme-text-done)]': wordCount === 50 }">50</button>
-        <button @click="setWordCount(100)" :class="{ 'text-[var(--theme-text-done)]': wordCount === 100 }">100</button>
+        <button
+          @click="setWordCount(10)"
+          :class="{ 'text-[var(--theme-text-done)]': wordCount === 10 }"
+        >
+          10
+        </button>
+        <button
+          @click="setWordCount(25)"
+          :class="{ 'text-[var(--theme-text-done)]': wordCount === 25 }"
+        >
+          25
+        </button>
+        <button
+          @click="setWordCount(50)"
+          :class="{ 'text-[var(--theme-text-done)]': wordCount === 50 }"
+        >
+          50
+        </button>
+        <button
+          @click="setWordCount(100)"
+          :class="{ 'text-[var(--theme-text-done)]': wordCount === 100 }"
+        >
+          100
+        </button>
       </div>
     </div>
-    
-    
+
     <div class="game-container relative">
-      <div 
+      <div
         ref="textboxRef"
         tabindex="0"
         class="textbox tracking-tighter transition-all duration-300"
@@ -46,7 +64,11 @@
             }"
           >
             <span
-              v-if="wIndex === currWordIndex && lIndex === currLetterIndex && !isFinished"
+              v-if="
+                wIndex === currWordIndex &&
+                lIndex === currLetterIndex &&
+                !isFinished
+              "
               class="caret"
             ></span>
             {{ letter.char }}
@@ -54,7 +76,9 @@
           <!-- Caret at the end of the word -->
           <span
             v-if="
-              wIndex === currWordIndex && currLetterIndex === word.letters.length && !isFinished
+              wIndex === currWordIndex &&
+              currLetterIndex === word.letters.length &&
+              !isFinished
             "
             class="caret-end"
           ></span>
@@ -62,13 +86,11 @@
       </div>
 
       <!-- Result Overlay -->
-      <div 
-        v-if="isFinished" 
+      <div
+        v-if="isFinished"
         class="absolute inset-0 flex flex-col items-center justify-center z-10 rounded-lg"
       >
-        <div class="text-[var(--theme-text)] text-4xl font-bold mb-2">
-          WPM
-        </div>
+        <div class="text-[var(--theme-text)] text-4xl font-bold mb-2">WPM</div>
         <div class="text-[var(--theme-title)] text-6xl font-bold mb-4">
           {{ wpm }}
         </div>
@@ -78,12 +100,18 @@
         <div class="text-[var(--theme-title)] text-4xl font-bold">
           {{ accuracy }}%
         </div>
-        <div class="mt-4 text-[var(--theme-text)]">{{ CL }}/{{ TL }} letters</div>
+        <div class="mt-4 text-[var(--theme-text)]">
+          {{ CL }}/{{ TL }} letters
+        </div>
         <div class="text-[var(--theme-text)]">{{ CW }} words</div>
+        <div class="text-[var(--theme-text)]">{{ timeTaken }} seconds</div>
       </div>
     </div>
-    
-    <div v-if="startTime && !isFinished" class="flex gap-8 text-xl font-bold text-[var(--theme-title)] mt-4 justify-center items-end">
+
+    <div
+      v-if="startTime && !isFinished"
+      class="flex gap-8 text-xl font-bold text-[var(--theme-title)] mt-4 justify-center items-end"
+    >
       <div class="liveStat">{{ wpm }}</div>
       <div class="text-2xl mb-2">{{ currWordIndex }}/{{ wordCount }}</div>
     </div>
@@ -102,7 +130,7 @@ import { ref, onMounted, onUnmounted, nextTick } from "vue";
 import { RefreshCcw } from "lucide-vue-next";
 
 type Letter = { char: string; correct: boolean | null };
-type WordObject = { word: string; letters: Letter[], correct: boolean | null };
+type WordObject = { word: string; letters: Letter[]; correct: boolean | null };
 
 const wordBank = ref<string[]>([]);
 const testWords = ref<WordObject[]>([]);
@@ -110,7 +138,7 @@ const currWordIndex = ref(0);
 const currLetterIndex = ref(0);
 const accuracy = ref(0);
 const TL = ref(0);
-const CL  = ref(0);
+const CL = ref(0);
 const CW = ref(0);
 const wordCount = ref(10);
 const isFinished = ref(false);
@@ -119,6 +147,7 @@ const wpm = ref(0);
 const timerInterval = ref<number | null>(null);
 const wordRefs = ref<HTMLElement[]>([]);
 const textboxRef = ref<HTMLElement | null>(null);
+const timeTaken = ref(0);
 
 // ✅ Fetch word bank
 async function fetchWordBank() {
@@ -144,10 +173,10 @@ function generateTestWords(count = 10) {
 // Refresh handler
 function refresh(count = 10) {
   testWords.value = generateTestWords(count);
-  CL.value=0;
-  TL.value=0;
-  CW.value=0;
-  accuracy.value=0;
+  CL.value = 0;
+  TL.value = 0;
+  CW.value = 0;
+  accuracy.value = 0;
   currWordIndex.value = 0;
   currLetterIndex.value = 0;
   isFinished.value = false;
@@ -176,7 +205,7 @@ function startTimer() {
     if (startTime.value) {
       const durationInMinutes = (Date.now() - startTime.value) / 60000;
       if (durationInMinutes > 0) {
-        wpm.value = Math.round(((CL.value + CW.value) / 5) / durationInMinutes);
+        wpm.value = Math.round(CL.value / 5 / durationInMinutes);
       }
     }
   }, 1000);
@@ -199,7 +228,13 @@ function handleKeydown(e: KeyboardEvent) {
   if (!currentWord) return;
 
   // Start timer on first valid keypress
-  if (startTime.value === null && e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
+  if (
+    startTime.value === null &&
+    e.key.length === 1 &&
+    !e.ctrlKey &&
+    !e.altKey &&
+    !e.metaKey
+  ) {
     startTime.value = Date.now();
     startTimer();
   }
@@ -208,7 +243,7 @@ function handleKeydown(e: KeyboardEvent) {
   if (e.key === "Backspace") {
     if (currLetterIndex.value > 0) {
       currLetterIndex.value--;
-      if(currentWord.letters[currLetterIndex.value].correct){
+      if (currentWord.letters[currLetterIndex.value].correct) {
         CL.value--;
       }
       currentWord.letters[currLetterIndex.value].correct = null;
@@ -216,18 +251,20 @@ function handleKeydown(e: KeyboardEvent) {
       // Go back to previous word
       currWordIndex.value--;
       const prevWord = testWords.value[currWordIndex.value];
-      if(prevWord.correct){
+      if (prevWord.correct) {
         CW.value--;
       }
-      const finishedWord = prevWord.letters.findIndex(l => l.correct===null);
-      console.log(finishedWord)
-      if(finishedWord == -1){
-        currLetterIndex.value = testWords.value[currWordIndex.value].letters.length;
+      const finishedWord = prevWord.letters.findIndex(
+        (l) => l.correct === null
+      );
+      console.log(finishedWord);
+      if (finishedWord == -1) {
+        currLetterIndex.value =
+          testWords.value[currWordIndex.value].letters.length;
+      } else {
+        currLetterIndex.value = finishedWord;
       }
-      else{
-        currLetterIndex.value = finishedWord
-      }
-      
+
       // Check for scrolling back up (optional, but good for UX)
       nextTick(() => {
         const wordEl = wordRefs.value[currWordIndex.value];
@@ -235,7 +272,7 @@ function handleKeydown(e: KeyboardEvent) {
         if (wordEl && box) {
           const wordTop = wordEl.offsetTop - box.offsetTop;
           if (wordTop < box.scrollTop) {
-             wordEl.scrollIntoView({ block: 'center', behavior: 'smooth' }); 
+            wordEl.scrollIntoView({ block: "center", behavior: "smooth" });
           }
         }
       });
@@ -248,13 +285,15 @@ function handleKeydown(e: KeyboardEvent) {
   if (e.key === " ") {
     e.preventDefault(); // Prevent scrolling
     if (currWordIndex.value < testWords.value.length - 1) {
-      currentWord.correct = currentWord.letters.every(l => l.correct)
-      if(currentWord.correct){
-        CW.value++
+      currentWord.correct = currentWord.letters.every((l) => l.correct);
+      if (currentWord.correct) {
+        CW.value++;
       }
+      CL.value++;
+      TL.value++;
       currWordIndex.value++;
       currLetterIndex.value = 0;
-      
+
       // Scroll Logic
       nextTick(() => {
         const wordEl = wordRefs.value[currWordIndex.value];
@@ -263,10 +302,10 @@ function handleKeydown(e: KeyboardEvent) {
           const wordTop = wordEl.offsetTop - box.offsetTop;
           const style = window.getComputedStyle(box);
           const lineHeight = parseFloat(style.lineHeight);
-          
+
           // Scroll if we are on the 3rd line (>= 2 * lineHeight)
           if (wordTop - box.scrollTop >= 2 * lineHeight) {
-             box.scrollTop += lineHeight;
+            box.scrollTop += lineHeight;
           }
         }
       });
@@ -277,36 +316,39 @@ function handleKeydown(e: KeyboardEvent) {
   // Character input
   if (e.key.length === 1) {
     if (currLetterIndex.value < currentWord.letters.length) {
-      TL.value++
+      TL.value++;
       const currentLetter = currentWord.letters[currLetterIndex.value];
       currentLetter.correct = e.key === currentLetter.char;
-      if(currentLetter?.correct){
+      if (currentLetter?.correct) {
         CL.value++;
-      }
-      else{
+      } else {
         currentWord.correct = false;
       }
       currLetterIndex.value++;
-      console.log(currentWord.letters[currLetterIndex.value])
-      if(currLetterIndex.value == currentWord.letters.length && currWordIndex.value == testWords.value.length - 1){
-        currentWord.correct = currentWord.letters.every(l => l.correct)
-        if(currentWord.correct){
-          CW.value++
+      console.log(currentWord.letters[currLetterIndex.value]);
+      if (
+        currLetterIndex.value == currentWord.letters.length &&
+        currWordIndex.value == testWords.value.length - 1
+      ) {
+        currentWord.correct = currentWord.letters.every((l) => l.correct);
+        if (currentWord.correct) {
+          CW.value++;
         }
-        accuracy.value = Math.floor((CL.value/TL.value)*100);
-        
+        accuracy.value = Math.floor((CL.value / TL.value) * 100);
+        timeTaken.value = (Date.now() - startTime.value) / 1000;
         // Calculate WPM one last time
         if (startTime.value) {
           const durationInMinutes = (Date.now() - startTime.value) / 60000;
-      if (durationInMinutes > 0) {
-        wpm.value = Math.round((CW.value) / durationInMinutes);
-      }
-        }
-        
-        isFinished.value = true;
-        stopTimer();
-        console.log("finish")
 
+          if (durationInMinutes > 0) {
+            wpm.value = Math.round(CL.value / 5 / durationInMinutes);
+          }
+        }
+
+        isFinished.value = true;
+
+        stopTimer();
+        console.log("finish");
       }
     } else {
       // Extra characters (optional: handle overtyping)
@@ -317,7 +359,7 @@ function handleKeydown(e: KeyboardEvent) {
 // ✅ Lifecycle
 onMounted(async () => {
   await fetchWordBank();
-  
+
   const savedCount = localStorage.getItem("monkeytype-word-count");
   if (savedCount) {
     const count = parseInt(savedCount, 10);
@@ -325,7 +367,7 @@ onMounted(async () => {
       wordCount.value = count;
     }
   }
-  
+
   refresh(wordCount.value);
   window.addEventListener("keydown", handleKeydown);
 });
@@ -334,8 +376,6 @@ onUnmounted(() => {
   window.removeEventListener("keydown", handleKeydown);
   stopTimer();
 });
-
-
 </script>
 
 <style scoped>

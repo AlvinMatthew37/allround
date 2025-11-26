@@ -55,7 +55,8 @@
   --theme-title: #808080;
   --theme-bg: #3d3d3d;
 }
-[data-theme="carbon"]{
+
+[data-theme="carbon"] {
   --theme-text: #000000;
   --theme-text-done: #808080;
   --theme-text-error: #c96b6b;
@@ -67,6 +68,7 @@
   --accent: transparent;
   --accent-foreground: var(--theme-title);
 }
+
 [data-theme="dark"] {
   --theme-title: #535bf2;
   --theme-bg: #0f172a;
@@ -91,6 +93,7 @@
   --accent: transparent;
   --accent-foreground: var(--theme-bg);
 }
+
 [data-theme="botanical"] {
   --theme-title: white;
   --theme-bg: #6b9e92;
@@ -103,6 +106,7 @@
   --accent: transparent;
   --accent-foreground: var(--theme-bg);
 }
+
 [data-theme="taro"] {
   --theme-title: #0c0e23;
   --theme-bg: #b3baff;
@@ -116,7 +120,39 @@
   --accent-foreground: var(--theme-bg);
 }
 
-body{
+[data-theme="peachy"] {
+  --theme-title: #b5838d;
+  --theme-bg: #ffcdb2;
+  --theme-text: #e5989b;
+  --theme-text-focus: #b5838d;
+  --theme-text-done: #ffb4a2;
+  --theme-text-error: #c96b6b;
+  --popover-foreground: #e5989b;
+  --card-foreground: #e5989b;
+  --accent: transparent;
+  --accent-foreground: var(--theme-bg);
+}
+
+[data-theme="forest"] {
+  --color1: #cad2c5;
+  --color2: #84a98c;
+  --color3: #52796f;
+  --color4: #354f52;
+  --theme-title: var(--color2);
+  --theme-bg: var(--color4);
+  --theme-text: var(--color1);
+  --theme-text-focus: var(--color2);
+  --theme-text-done: var(--color3);
+  --theme-text-error: #c96b6b;
+  --popover: var(--color3);
+  --popover-foreground: var(--color1);
+  --card-foreground: var(--color1);
+  --accent: var(--color1);
+  --border: transparent;
+  --accent-foreground: var(--theme-bg);
+}
+
+body {
   background-color: var(--theme-bg);
 }
 
@@ -173,9 +209,11 @@ h1 {
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
 }
@@ -215,6 +253,7 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
@@ -298,6 +337,7 @@ button:focus-visible {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

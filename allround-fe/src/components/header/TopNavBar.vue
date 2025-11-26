@@ -20,10 +20,18 @@
 
       <router-link to="/about" class="nav-link">About</router-link>
     </div>
-    <div class="flex gap-4 min-w-[200px] justify-end items-center">
+    <div class="right-content">
       <router-link to="/settings" class="nav-link mr-4">Settings</router-link>
-      <button class="auth-btn bg-[var(--theme-text)] text-[var(--theme-bg)] hover:opacity-90 transition-opacity">Login</button>
-      <button class="auth-btn bg-[var(--theme-text)] text-[var(--theme-bg)] hover:opacity-90 transition-opacity">Sign Up</button>
+      <button
+        class="auth-btn bg-[var(--theme-text)] text-[var(--theme-bg)] hover:opacity-90 transition-opacity"
+      >
+        Login
+      </button>
+      <button
+        class="auth-btn bg-[var(--theme-text)] text-[var(--theme-bg)] hover:opacity-90 transition-opacity"
+      >
+        Sign Up
+      </button>
     </div>
   </div>
 </template>
@@ -64,6 +72,15 @@ h1 {
   display: flex;
   gap: 2rem;
   justify-content: left;
+  align-items: center;
+}
+.right-content {
+  color: var(--theme-text);
+  font-weight: 600;
+  width: 100%;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: right;
   align-items: center;
 }
 .nav-link {
