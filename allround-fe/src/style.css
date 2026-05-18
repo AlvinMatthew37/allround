@@ -67,6 +67,7 @@
   --card-foreground: #000000;
   --accent: transparent;
   --accent-foreground: var(--theme-title);
+  --block: #000000;
 }
 
 [data-theme="dark"] {
@@ -92,6 +93,7 @@
   --card-foreground: #1e3a8a;
   --accent: transparent;
   --accent-foreground: var(--theme-bg);
+  --block: #000000;
 }
 
 [data-theme="botanical"] {
@@ -105,6 +107,7 @@
   --card-foreground: #385f56;
   --accent: transparent;
   --accent-foreground: var(--theme-bg);
+  --block: rgba(0, 0, 0, 0.2);
 }
 
 [data-theme="taro"] {
@@ -121,16 +124,21 @@
 }
 
 [data-theme="peachy"] {
-  --theme-title: #b5838d;
-  --theme-bg: #ffcdb2;
-  --theme-text: #e5989b;
-  --theme-text-focus: #b5838d;
-  --theme-text-done: #ffb4a2;
+  --color1: #ffcdb2;
+  --color2: #e5989b;
+  --color3: #b5838d;
+  --color4: #ffb4a2;
+  --theme-title: var(--color3);
+  --theme-bg: var(--color1);
+  --theme-text: var(--color2);
+  --theme-text-focus: var(--color3);
+  --theme-text-done: var(--color4);
   --theme-text-error: #c96b6b;
-  --popover-foreground: #e5989b;
-  --card-foreground: #e5989b;
+  --popover-foreground: var(--color2);
+  --card-foreground: var(--color2);
   --accent: transparent;
   --accent-foreground: var(--theme-bg);
+  --block: rgba(0, 0, 0, 0.2);
 }
 
 [data-theme="forest"] {
@@ -148,8 +156,46 @@
   --popover-foreground: var(--color1);
   --card-foreground: var(--color1);
   --accent: var(--color1);
-  --border: transparent;
+  --border: var(--color1);
   --accent-foreground: var(--theme-bg);
+  --block: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="bubblegum"] {
+  --color1: #f4b0ca;
+  --color2: #92e8d3;
+  --color3: #31b79b;
+  --color4: white;
+  --theme-title: var(--color1);
+  --theme-bg: var(--color4);
+  --theme-text: var(--color2);
+  --theme-text-focus: var(--color3);
+  --theme-text-done: var(--color1);
+  --theme-text-error: #c96b6b;
+  --popover: var(--color4);
+  --popover-foreground: var(--color2);
+  --card-foreground: var(--color2);
+  --accent: var(--color1);
+  --border: var(--color1);
+  --accent-foreground: var(--color4);
+  --block: #f186af;
+}
+
+[data-theme="sandstone"] {
+  --theme-title: #D4AA7D;
+  --theme-bg: #272727;
+  --theme-text: #D4AA7D;
+  --theme-text-focus: #E8C4A0;
+  --theme-text-done: #C09060;
+  --theme-text-error: #c96b6b;
+  --popover: #272727;
+  --popover-foreground: #D4AA7D;
+  --card-foreground: #D4AA7D;
+  --accent: #D4AA7D;
+  --border: #3a3a3a;
+  --accent-foreground: #272727;
+  --block: rgba(212, 170, 125, 0.1);
+  --input: #3a3a3a;
 }
 
 body {

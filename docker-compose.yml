@@ -1,0 +1,7 @@
+services:
+  allround-fe:
+    build:
+      context: ./allround-fe
+    ports:
+      - "1000:80"
+    restart: always

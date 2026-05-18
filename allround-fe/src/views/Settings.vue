@@ -1,12 +1,12 @@
 <template>
-  <div class="p-6 max-w-6xl mx-auto text-[var(--theme-text)]">
-    <h1 class="text-3xl font-bold mb-8 text-[var(--theme-title)]">Settings</h1>
+  <div class="p-4 sm:p-6 max-w-6xl mx-auto text-[var(--theme-text)]">
+    <h1 class="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-[var(--theme-title)]">Settings</h1>
 
     <div class="mb-8">
       <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
         <span class="text-[var(--theme-title)]">Theme</span>
       </h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         <button
           v-for="theme in themes"
           :key="theme.name"
@@ -81,6 +81,20 @@ const themes = [
     bgColor: "#354f52",
     textColor: "#cad2c5",
     palette: ["#cad2c5", "#84a98c", "#52796f"],
+  },
+  {
+    name: "bubblegum",
+    label: "bubblegum",
+    bgColor: "white",
+    textColor: "#92e8d3",
+    palette: ["#f4b0ca", "#92e8d3", "#31b79b"],
+  },
+  {
+    name: "sandstone",
+    label: "sandstone",
+    bgColor: "#272727",
+    textColor: "#D4AA7D",
+    palette: ["#D4AA7D", "#E8C4A0", "#272727"],
   },
 ];
 
