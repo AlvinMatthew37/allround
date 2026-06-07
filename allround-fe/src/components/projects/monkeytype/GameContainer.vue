@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onBeforeUpdate, ref } from "vue";
 
 type Letter = { char: string; correct: boolean | null };
 type WordObject = { word: string; letters: Letter[]; correct: boolean | null };
@@ -67,9 +67,43 @@ defineProps<{
 const textboxRef = ref<HTMLElement | null>(null);
 const wordRefs = ref<HTMLElement[]>([]);
 
+function resetView() {
+  if (!textboxRef.value) return;
+
+  textboxRef.value.scrollTop = 0;
+  textboxRef.value.focus();
+}
+
+function scrollToWord(index: number, direction: "backspace" | "advance") {
+  const wordEl = wordRefs.value[index];
+  const box = textboxRef.value;
+
+  if (!wordEl || !box) return;
+
+  const wordTop = wordEl.offsetTop - box.offsetTop;
+
+  if (direction === "backspace") {
+    if (wordTop < box.scrollTop) {
+      wordEl.scrollIntoView({ block: "center", behavior: "smooth" });
+    }
+    return;
+  }
+
+  const style = window.getComputedStyle(box);
+  const lineHeight = parseFloat(style.lineHeight);
+
+  if (wordTop - box.scrollTop >= 2 * lineHeight) {
+    box.scrollTop += lineHeight;
+  }
+}
+
+onBeforeUpdate(() => {
+  wordRefs.value = [];
+});
+
 defineExpose({
-  textboxRef,
-  wordRefs,
+  resetView,
+  scrollToWord,
 });
 </script>
 

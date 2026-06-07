@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from './pages/Home.vue'
 import About from './pages/About.vue'
-import Monkeytype from './components/projects/Monkeytype.vue'
-import Aimlab from './components/projects/Aimlab.vue'
+import Monkeytype from './pages/Monkeytype.vue'
+import Aimlab from './pages/Aimlab.vue'
 import Settings from './views/Settings.vue'
 
 const routes = [

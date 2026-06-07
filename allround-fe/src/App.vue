@@ -3,13 +3,25 @@ import TopNavBar from "./components/header/TopNavBar.vue";
 </script>
 
 <template>
-  <!-- <navbar /> -->
-  <TopNavBar />
-  <!-- <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav> -->
-  <router-view />
+  <div class="app-shell">
+    <TopNavBar />
+
+    <main class="app-main">
+      <router-view />
+    </main>
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.app-shell {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
+  min-height: 0;
+}
+</style>

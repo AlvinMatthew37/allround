@@ -4,7 +4,7 @@
     <h1 class="text-2xl font-bold mb-4 text-[var(--theme-title)]">
       MONKEYTYPE
     </h1>
-    
+
     <Toolbar
       :mode="mode"
       :word-count="wordCount"
@@ -56,10 +56,10 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, nextTick } from "vue";
 import { RefreshCcw } from "lucide-vue-next";
-import Toolbar from "./monkeytype/Toolbar.vue";
-import GameContainer from "./monkeytype/GameContainer.vue";
-import LiveStats from "./monkeytype/LiveStats.vue";
-import ResultOverlay from "./monkeytype/ResultOverlay.vue";
+import Toolbar from "../components/projects/monkeytype/Toolbar.vue";
+import GameContainer from "../components/projects/monkeytype/GameContainer.vue";
+import LiveStats from "../components/projects/monkeytype/LiveStats.vue";
+import ResultOverlay from "../components/projects/monkeytype/ResultOverlay.vue";
 
 type Letter = { char: string; correct: boolean | null };
 type WordObject = { word: string; letters: Letter[]; correct: boolean | null };
@@ -72,7 +72,7 @@ const accuracy = ref(0);
 const TL = ref(0);
 const CL = ref(0);
 const CW = ref(0);
-const mode = ref<'time' | 'words'>('words');
+const mode = ref<"time" | "words">("words");
 const wordCount = ref(10);
 const timeDuration = ref(30);
 const timeRemaining = ref(30);
@@ -82,12 +82,10 @@ const wpm = ref(0);
 const timerInterval = ref<number | null>(null);
 const countdownInterval = ref<number | null>(null);
 const timeTaken = ref(0);
-const caretStyle = ref<'line' | 'block'>('block');
+const caretStyle = ref<"line" | "block">("block");
 
-// Refs to child components
 const gameContainerRef = ref<InstanceType<typeof GameContainer> | null>(null);
 
-// ✅ Fetch word bank
 async function fetchWordBank() {
   const res = await fetch("/monkeytype/languages/english.json");
   if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
@@ -95,11 +93,9 @@ async function fetchWordBank() {
   wordBank.value = data.words || data;
 }
 
-// Generate word list
 function generateTestWords(count = 10) {
   if (wordBank.value.length === 0) return [];
-  // Generate more words for time mode to ensure we don't run out
-  const wordsToGenerate = mode.value === 'time' ? 500 : count;
+  const wordsToGenerate = mode.value === "time" ? 500 : count;
   return Array.from({ length: wordsToGenerate }, () => {
     const word =
       wordBank.value[Math.floor(Math.random() * wordBank.value.length)]!;
@@ -111,7 +107,6 @@ function generateTestWords(count = 10) {
   });
 }
 
-// Refresh handler
 function refresh() {
   testWords.value = generateTestWords(wordCount.value);
   CL.value = 0;
@@ -126,17 +121,13 @@ function refresh() {
   timeRemaining.value = timeDuration.value;
   stopTimer();
   stopCountdown();
-  
-  if (gameContainerRef.value?.textboxRef) {
-    gameContainerRef.value.textboxRef.scrollTop = 0;
-    nextTick(() => {
-      gameContainerRef.value?.textboxRef?.focus();
-    });
-  }
-  console.log("New test words:", testWords.value);
+
+  nextTick(() => {
+    gameContainerRef.value?.resetView();
+  });
 }
 
-function setMode(newMode: 'time' | 'words') {
+function setMode(newMode: "time" | "words") {
   mode.value = newMode;
   localStorage.setItem("monkeytype-mode", newMode);
   refresh();
@@ -203,19 +194,15 @@ function finishTest() {
   isFinished.value = true;
   stopTimer();
   stopCountdown();
-  console.log("finish");
 }
 
-// Typing Handler
 function handleKeydown(e: KeyboardEvent) {
-  // Ignore modifiers
   if (e.ctrlKey || e.altKey || e.metaKey) return;
   if (isFinished.value) return;
 
   const currentWord = testWords.value[currWordIndex.value];
   if (!currentWord) return;
 
-  // Start timer on first valid keypress
   if (
     startTime.value === null &&
     e.key.length === 1 &&
@@ -225,12 +212,11 @@ function handleKeydown(e: KeyboardEvent) {
   ) {
     startTime.value = Date.now();
     startTimer();
-    if (mode.value === 'time') {
+    if (mode.value === "time") {
       startCountdown();
     }
   }
 
-  // Backspace
   if (e.key === "Backspace") {
     if (currLetterIndex.value > 0) {
       currLetterIndex.value--;
@@ -242,17 +228,13 @@ function handleKeydown(e: KeyboardEvent) {
         letter.correct = null;
       }
     } else if (currWordIndex.value > 0) {
-      // Go back to previous word
       currWordIndex.value--;
       const prevWord = testWords.value[currWordIndex.value];
       if (prevWord) {
         if (prevWord.correct) {
           CW.value--;
         }
-        const finishedWord = prevWord.letters.findIndex(
-          (l) => l.correct === null
-        );
-        console.log(finishedWord);
+        const finishedWord = prevWord.letters.findIndex((l) => l.correct === null);
         if (finishedWord == -1) {
           currLetterIndex.value = prevWord.letters.length;
         } else {
@@ -260,25 +242,16 @@ function handleKeydown(e: KeyboardEvent) {
         }
       }
 
-      // Check for scrolling back up (optional, but good for UX)
       nextTick(() => {
-        const wordEl = gameContainerRef.value?.wordRefs[currWordIndex.value];
-        const box = gameContainerRef.value?.textboxRef;
-        if (wordEl && box) {
-          const wordTop = wordEl.offsetTop - box.offsetTop;
-          if (wordTop < box.scrollTop) {
-            wordEl.scrollIntoView({ block: "center", behavior: "smooth" });
-          }
-        }
+        gameContainerRef.value?.scrollToWord(currWordIndex.value, "backspace");
       });
     }
 
     return;
   }
 
-  // Space (Next Word)
   if (e.key === " ") {
-    e.preventDefault(); // Prevent scrolling
+    e.preventDefault();
     if (currWordIndex.value < testWords.value.length - 1) {
       currentWord.correct = currentWord.letters.every((l) => l.correct);
       if (currentWord.correct) {
@@ -289,26 +262,13 @@ function handleKeydown(e: KeyboardEvent) {
       currWordIndex.value++;
       currLetterIndex.value = 0;
 
-      // Scroll Logic
       nextTick(() => {
-        const wordEl = gameContainerRef.value?.wordRefs[currWordIndex.value];
-        const box = gameContainerRef.value?.textboxRef;
-        if (wordEl && box) {
-          const wordTop = wordEl.offsetTop - box.offsetTop;
-          const style = window.getComputedStyle(box);
-          const lineHeight = parseFloat(style.lineHeight);
-
-          // Scroll if we are on the 3rd line (>= 2 * lineHeight)
-          if (wordTop - box.scrollTop >= 2 * lineHeight) {
-            box.scrollTop += lineHeight;
-          }
-        }
+        gameContainerRef.value?.scrollToWord(currWordIndex.value, "advance");
       });
     }
     return;
   }
 
-  // Character input
   if (e.key.length === 1) {
     if (currLetterIndex.value < currentWord.letters.length) {
       TL.value++;
@@ -322,10 +282,8 @@ function handleKeydown(e: KeyboardEvent) {
         }
       }
       currLetterIndex.value++;
-      console.log(currentWord.letters[currLetterIndex.value]);
-      // Only finish on last word in words mode
       if (
-        mode.value === 'words' &&
+        mode.value === "words" &&
         currLetterIndex.value == currentWord.letters.length &&
         currWordIndex.value == testWords.value.length - 1
       ) {
@@ -335,18 +293,15 @@ function handleKeydown(e: KeyboardEvent) {
         }
         finishTest();
       }
-    } else {
-      // Extra characters (optional: handle overtyping)
     }
   }
 }
 
-// ✅ Lifecycle
 onMounted(async () => {
   await fetchWordBank();
 
   const savedMode = localStorage.getItem("monkeytype-mode");
-  if (savedMode === 'time' || savedMode === 'words') {
+  if (savedMode === "time" || savedMode === "words") {
     mode.value = savedMode;
   }
 
