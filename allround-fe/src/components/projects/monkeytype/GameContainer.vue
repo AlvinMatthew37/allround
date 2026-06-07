@@ -155,8 +155,7 @@ defineExpose({
 .caret-block {
   position: absolute;
   inset: 0;
-  background-color: var(--block);
-  opacity: 0.5;
+  background-color: color-mix(in srgb, var(--block, var(--theme-title)) 35%, transparent);
   animation: blink 1s infinite;
   z-index: -1;
   border-radius: 2px;
@@ -169,8 +168,7 @@ defineExpose({
   top: 0;
   width: 1ch;
   height: 100%;
-  background-color: var(--block);
-  opacity: 0.5;
+  background-color: color-mix(in srgb, var(--block, var(--theme-title)) 35%, transparent);
   animation: blink 1s infinite;
   border-radius: 2px;
 }
