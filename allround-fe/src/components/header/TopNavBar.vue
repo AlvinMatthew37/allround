@@ -26,7 +26,7 @@
             <router-link to="/projects/monkeytype" class="sub-nav-link cursor-pointer outline-none flex items-center gap-1 bg-transparent border-none p-0 project-trigger">
               Monkeytype
               <Keyboard
-                class="w-4 h-4 text-[var(--theme-text)] group-hover:text-[var(--accent-foreground)] transition-colors"
+                class="w-4 h-4 text-[var(--theme-text)] group-hover:text-[var(--theme-text-focus)] transition-colors"
               />
             </router-link>
           </DropdownMenuItem>
@@ -34,7 +34,7 @@
             <router-link to="/projects/monkeytype" class="sub-nav-link cursor-pointer outline-none flex items-center gap-1 bg-transparent border-none p-0 project-trigger">
               Monkeytype
               <Keyboard
-                class="w-4 h-4 text-[var(--theme-text)] group-hover:text-[var(--accent-foreground)] transition-colors"
+                class="w-4 h-4 text-[var(--theme-text)] group-hover:text-[var(--theme-text-focus)] transition-colors"
               />
             </router-link>
           </DropdownMenuItem>
@@ -42,7 +42,7 @@
             <router-link to="/projects/monkeytype" class="sub-nav-link cursor-pointer outline-none flex items-center gap-1 bg-transparent border-none p-0 project-trigger">
               Monkeytype
               <Keyboard
-                class="w-4 h-4 text-[var(--theme-text)] group-hover:text-[var(--accent-foreground)] transition-colors"
+                class="w-4 h-4 text-[var(--theme-text)] group-hover:text-[var(--theme-text-focus)] transition-colors"
               />
             </router-link>
           </DropdownMenuItem>
@@ -95,7 +95,7 @@
                 >
                   Monkeytype
                   <Keyboard
-                    class="pl-2w-4 h-4 text-[var(--theme-text)] group-hover:text-[var(--accent-foreground)] transition-colors"
+                    class="pl-2w-4 h-4 text-[var(--theme-text)] group-hover:text-[var(--theme-text-focus)] transition-colors"
                   />
                 </router-link>
               </div>
@@ -216,8 +216,8 @@ const toggleMobileMenu = () => {
 }
 
 .nav-link:hover {
-  color: var(--theme-text-done);
-  background-color: rgba(0, 0, 0, 0.2);
+  color: var(--theme-text-focus);
+  background-color: color-mix(in srgb, var(--theme-text-focus) 12%, transparent);
   border-radius: 0.5rem;
   transition: all 0.5s;
 }
@@ -248,7 +248,7 @@ const toggleMobileMenu = () => {
 }
 
 .mobile-menu-btn:hover {
-  color: var(--theme-text-done);
+  color: var(--theme-text-focus);
 }
 
 /* Mobile Menu */
@@ -291,8 +291,8 @@ const toggleMobileMenu = () => {
 }
 
 .mobile-nav-link:hover {
-  background-color: rgba(0, 0, 0, 0.25);
-  color: var(--accent-foreground);
+  background-color: color-mix(in srgb, var(--theme-text-focus) 14%, transparent);
+  color: var(--theme-text-focus);
 }
 
 .mobile-dropdown {

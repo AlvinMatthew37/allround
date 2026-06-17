@@ -1,5 +1,6 @@
 import {
   getThemeByName,
+  getThemeColorForCssVar,
   normalizeThemeName,
   themeCssVariables,
   type ThemeDefinition,
@@ -11,8 +12,8 @@ function applyTheme(theme: ThemeDefinition) {
   const root = document.documentElement;
   root.setAttribute("data-theme", theme.name);
 
-  for (const { cssVar, colorKey } of themeCssVariables) {
-    root.style.setProperty(cssVar, theme.colors[colorKey]);
+  for (const { cssVar } of themeCssVariables) {
+    root.style.setProperty(cssVar, getThemeColorForCssVar(theme, cssVar));
   }
 }
 

@@ -2,7 +2,7 @@
   <div
     class="aim-arena"
     :class="{ 'is-disabled': disabled }"
-    @click.self="$emit('arena-miss')"
+    @click.self="!disabled && $emit('arena-miss')"
   >
     <button
       v-for="target in targets"
@@ -12,7 +12,7 @@
       :disabled="disabled"
       :style="targetStyle(target)"
       :aria-label="`Target ${target.id}`"
-      @click.stop="$emit('hit', target.id)"
+      @click.stop="!disabled && $emit('hit', target.id)"
     />
   </div>
 </template>
@@ -39,7 +39,6 @@ function targetStyle(target: ArenaTarget) {
     gridRowStart: target.row,
     gridColumnStart: target.col,
     backgroundColor: "var(--theme-title)",
-    borderColor: "var(--theme-text)",
   };
 }
 </script>

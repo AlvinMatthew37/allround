@@ -30,7 +30,7 @@
 
     <div class="mods" v-else>
       <button
-        v-for="count in [15, 30, 50, 100]"
+        v-for="count in [1, 15, 30, 50, 100]"
         :key="count"
         @click="$emit('update:targetCount', count)"
         :class="{ 'text-[var(--theme-text-done)]': targetCount === count }"

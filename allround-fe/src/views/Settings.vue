@@ -13,7 +13,10 @@
           @click="setCurrTheme(theme.name)"
           class="theme-btn flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-200 outline-none border-2 border-transparent"
           :class="{ 'theme-btn-active': currentTheme === theme.name }"
-          :style="{ backgroundColor: theme.colors.color4, color: theme.colors.color1 }"
+          :style="{
+            backgroundColor: getThemeColorForCssVar(theme, '--theme-bg'),
+            color: getThemeColorForCssVar(theme, '--theme-text'),
+          }"
         >
           <span class="font-medium">{{ theme.label }}</span>
           <div class="flex gap-2">
@@ -32,7 +35,11 @@
 
 <script setup lang="ts">
 import { setTheme } from "../components/projects/theme";
-import { normalizeThemeName, themeDefinitions } from "../components/projects/themes";
+import {
+  getThemeColorForCssVar,
+  normalizeThemeName,
+  themeDefinitions,
+} from "../components/projects/themes";
 import { onMounted, ref } from "vue";
 
 const currentTheme = ref("default");

@@ -1,6 +1,7 @@
 export type ThemeName =
   | "carbon"
   | "blue"
+  | "calsonic"
   | "deep-space"
   | "8088"
   | "mizu"
@@ -17,10 +18,26 @@ export type ThemeName =
 
 export type ThemeColorKey = "color1" | "color2" | "color3" | "color4";
 
+export type ThemeCssVar =
+  | "--theme-text"
+  | "--theme-title"
+  | "--theme-text-focus"
+  | "--theme-text-done"
+  | "--theme-bg"
+  | "--popover"
+  | "--popover-foreground"
+  | "--card-foreground"
+  | "--accent"
+  | "--border"
+  | "--accent-foreground"
+  | "--block"
+  | "--input";
+
 export type ThemeDefinition = {
   name: ThemeName;
   label: string;
   colors: Record<ThemeColorKey, string>;
+  cssVariables?: Partial<Record<ThemeCssVar, ThemeColorKey>>;
 };
 
 export const themeDefinitions: ThemeDefinition[] = [
@@ -42,6 +59,16 @@ export const themeDefinitions: ThemeDefinition[] = [
       color2: "#00113f",
       color3: "#4d91f7",
       color4: "#e0f2fe",
+    },
+  },
+  {
+    name: "calsonic",
+    label: "calsonic",
+    colors: {
+      color1: "#17324d",
+      color2: "#f4f8fb",
+      color3: "#ffd84d",
+      color4: "#0b77d9",
     },
   },
   {
@@ -188,9 +215,24 @@ export const themeCssVariables = [
   { cssVar: "--accent", colorKey: "color2" as const },
   { cssVar: "--border", colorKey: "color3" as const },
   { cssVar: "--accent-foreground", colorKey: "color4" as const },
-  { cssVar: "--block", colorKey: "color2" as const },
+  { cssVar: "--block", colorKey: "color3" as const },
   { cssVar: "--input", colorKey: "color3" as const },
 ] as const;
+
+const defaultThemeColorKeysByCssVar = Object.fromEntries(
+  themeCssVariables.map(({ cssVar, colorKey }) => [cssVar, colorKey]),
+) as Record<ThemeCssVar, ThemeColorKey>;
+
+export function getThemeColorKeyForCssVar(
+  theme: ThemeDefinition,
+  cssVar: ThemeCssVar,
+): ThemeColorKey {
+  return theme.cssVariables?.[cssVar] ?? defaultThemeColorKeysByCssVar[cssVar];
+}
+
+export function getThemeColorForCssVar(theme: ThemeDefinition, cssVar: ThemeCssVar) {
+  return theme.colors[getThemeColorKeyForCssVar(theme, cssVar)];
+}
 
 export const themeNameSet = new Set<ThemeName>(themeDefinitions.map((theme) => theme.name));
 

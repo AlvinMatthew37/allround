@@ -46,7 +46,7 @@
 
     <button
       @click="refresh()"
-      class="px-4 py-2 text-[var(--theme-text)] hover:text-[var(--theme-title)] hover:bg-[#00000010] focus:outline-none focus:text-[var(--theme-title)] focus:bg-[#00000010] font-semibold rounded-lg transition mt-2"
+      class="px-4 py-2 text-[var(--theme-text)] hover:text-[var(--theme-text-focus)] hover:bg-[#00000010] focus:outline-none focus:text-[var(--theme-text-focus)] focus:bg-[#00000010] font-semibold rounded-lg transition mt-2"
     >
       <RefreshCcw class="w-8 h-8" />
     </button>

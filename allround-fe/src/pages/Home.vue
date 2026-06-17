@@ -23,7 +23,7 @@ import { projects } from '../components/projects/projectList';
       >
         <router-link 
           :to="project.path" 
-          class="project-link block p-4 border-2 border-[var(--theme-text)] hover:bg-[var(--theme-text)] text-[var(--theme-text)] hover:text-[var(--theme-bg)] transition-colors duration-200 h-full"
+          class="project-link block p-4 border-2 border-[var(--theme-text)] hover:border-[var(--theme-text-focus)] hover:bg-[var(--theme-text)] text-[var(--theme-text)] hover:text-[var(--theme-bg)] transition-colors duration-200 h-full"
         >
           <h2 class="text-xl font-bold mb-2">{{ project.name }}</h2>
           <p class="opacity-80">{{ project.description }}</p>
