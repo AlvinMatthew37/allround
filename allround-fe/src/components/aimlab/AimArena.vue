@@ -2,7 +2,7 @@
   <div
     class="aim-arena"
     :class="{ 'is-disabled': disabled }"
-    @click.self="!disabled && $emit('arena-miss')"
+    @mousedown.self="!disabled && $emit('arena-miss')"
   >
     <button
       v-for="target in targets"
@@ -12,7 +12,7 @@
       :disabled="disabled"
       :style="targetStyle(target)"
       :aria-label="`Target ${target.id}`"
-      @click.stop="!disabled && $emit('hit', target.id)"
+      @mousedown.stop="!disabled && $emit('hit', target.id)"
     />
   </div>
 </template>

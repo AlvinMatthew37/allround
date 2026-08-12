@@ -23,27 +23,15 @@
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem class="group">
-            <router-link to="/projects/monkeytype" class="sub-nav-link cursor-pointer outline-none flex items-center gap-1 bg-transparent border-none p-0 project-trigger">
+            <router-link to="/projects/monkeytype" class="sub-nav-link cursor-pointer outline-none flex items-center gap-2 bg-transparent border-none p-0 project-trigger">
+              <Keyboard class="w-4 h-4 text-current transition-colors" :stroke-width="1.5" />
               Monkeytype
-              <Keyboard
-                class="w-4 h-4 text-[var(--theme-text)] group-hover:text-[var(--theme-text-focus)] transition-colors"
-              />
             </router-link>
           </DropdownMenuItem>
           <DropdownMenuItem class="group">
-            <router-link to="/projects/monkeytype" class="sub-nav-link cursor-pointer outline-none flex items-center gap-1 bg-transparent border-none p-0 project-trigger">
-              Monkeytype
-              <Keyboard
-                class="w-4 h-4 text-[var(--theme-text)] group-hover:text-[var(--theme-text-focus)] transition-colors"
-              />
-            </router-link>
-          </DropdownMenuItem>
-          <DropdownMenuItem class="group">
-            <router-link to="/projects/monkeytype" class="sub-nav-link cursor-pointer outline-none flex items-center gap-1 bg-transparent border-none p-0 project-trigger">
-              Monkeytype
-              <Keyboard
-                class="w-4 h-4 text-[var(--theme-text)] group-hover:text-[var(--theme-text-focus)] transition-colors"
-              />
+            <router-link to="/projects/aimlab" class="sub-nav-link cursor-pointer outline-none flex items-center gap-2 bg-transparent border-none p-0 project-trigger">
+              <Target class="w-4 h-4 text-current transition-colors" :stroke-width="1.5" />
+              Aimlab
             </router-link>
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -87,16 +75,22 @@
               />
             </button>
             <Transition name="expand">
-              <div v-if="projectsOpen" class="mobile-submenu px-4 group">
+              <div v-if="projectsOpen" class="mobile-submenu px-4 group flex flex-col gap-1">
                 <router-link 
                   to="/projects/monkeytype" 
-                  class="mobile-nav-link"
+                  class="mobile-nav-link flex items-center gap-2"
                   @click="toggleMobileMenu"
                 >
+                  <Keyboard class="w-4 h-4 text-current transition-colors" :stroke-width="1.5" />
                   Monkeytype
-                  <Keyboard
-                    class="pl-2w-4 h-4 text-[var(--theme-text)] group-hover:text-[var(--theme-text-focus)] transition-colors"
-                  />
+                </router-link>
+                <router-link 
+                  to="/projects/aimlab" 
+                  class="mobile-nav-link flex items-center gap-2"
+                  @click="toggleMobileMenu"
+                >
+                  <Target class="w-4 h-4 text-current transition-colors" :stroke-width="1.5" />
+                  Aimlab
                 </router-link>
               </div>
             </Transition>
@@ -132,7 +126,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, ChevronRight, Keyboard, Menu, X } from "lucide-vue-next";
+import { ChevronDown, ChevronRight, Keyboard, Menu, Target, X } from "lucide-vue-next";
 
 const mobileMenuOpen = ref(false);
 const projectsOpen = ref(false);
@@ -228,6 +222,7 @@ const toggleMobileMenu = () => {
   transition: color 0.2s;
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
+  font-weight: 500;
 }
 
 .project-trigger {

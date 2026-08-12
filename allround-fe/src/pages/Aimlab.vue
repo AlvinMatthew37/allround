@@ -138,16 +138,10 @@ function getCellKey(row: number, col: number) {
   return `${row}-${col}`;
 }
 
-function getOccupiedCells(excludeId?: number) {
-  return new Set(
-    targets.value
-      .filter((target) => target.id !== excludeId)
-      .map((target) => getCellKey(target.row, target.col)),
+function randomCell(avoidTargets: GridTarget[]) {
+  const occupiedCells = new Set(
+    avoidTargets.map((target) => getCellKey(target.row, target.col)),
   );
-}
-
-function randomCell(excludeId?: number) {
-  const occupiedCells = getOccupiedCells(excludeId);
   const availableCells: Array<{ row: number; col: number }> = [];
 
   for (let row = 1; row <= gridSize; row += 1) {
@@ -164,8 +158,8 @@ function randomCell(excludeId?: number) {
   return selection ?? { row: 1, col: 1 };
 }
 
-function createTarget(excludeId?: number): GridTarget {
-  const cell = randomCell(excludeId);
+function createTarget(avoidTargets: GridTarget[]): GridTarget {
+  const cell = randomCell(avoidTargets);
 
   return {
     id: nextTargetId++,
@@ -178,7 +172,7 @@ function spawnTargets() {
   const createdTargets: GridTarget[] = [];
 
   while (createdTargets.length < boardTargetCount) {
-    createdTargets.push(createTarget());
+    createdTargets.push(createTarget(createdTargets));
   }
 
   targets.value = createdTargets;
@@ -272,8 +266,9 @@ function handleHit(id: number) {
 
   beginSession();
   hits.value += 1;
+  const newTarget = createTarget(targets.value);
   targets.value = targets.value.map((target) =>
-    target.id === id ? createTarget(id) : target,
+    target.id === id ? newTarget : target,
   );
 
   if (mode.value === "target" && hits.value >= targetCount.value) {
