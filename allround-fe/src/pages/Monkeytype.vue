@@ -87,7 +87,7 @@ const caretStyle = ref<"line" | "block">("block");
 const gameContainerRef = ref<InstanceType<typeof GameContainer> | null>(null);
 
 async function fetchWordBank() {
-  const res = await fetch("/monkeytype/languages/english.json");
+  const res = await fetch("https://raw.githubusercontent.com/monkeytypegame/monkeytype/master/frontend/static/languages/english.json");
   if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
   const data = await res.json();
   wordBank.value = data.words || data;
