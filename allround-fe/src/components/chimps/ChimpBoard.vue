@@ -1,5 +1,5 @@
 <template>
-  <div class="board" :class="{ flash }">
+  <div class="board">
     <button
       v-for="n in numbers"
       :key="n.value"
@@ -27,7 +27,6 @@ const props = defineProps<{
   state: "idle" | "memorize" | "recall" | "locked" | "over";
   expected: number;
   wrongCell: number | null;
-  flash: boolean;
 }>();
 
 defineEmits<{
@@ -53,24 +52,7 @@ function isRevealed(n: { cell: number; value: number }) {
   max-width: 40rem;
   aspect-ratio: 8 / 5;
   margin: 0 auto;
-  border-radius: 0.75rem;
   user-select: none;
-}
-
-.board.flash {
-  animation: board-flash 0.55s ease;
-}
-
-@keyframes board-flash {
-  0% {
-    background-color: transparent;
-  }
-  30% {
-    background-color: color-mix(in srgb, var(--theme-text-focus) 20%, transparent);
-  }
-  100% {
-    background-color: transparent;
-  }
 }
 
 .cell {
