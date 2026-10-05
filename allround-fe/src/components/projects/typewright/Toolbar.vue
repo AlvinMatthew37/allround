@@ -7,7 +7,7 @@
         title="time"
         :class="{ 'text-[var(--theme-text-done)]': mode === 'time' }"
       >
-        <Hourglass class="h-5 w-5" :stroke-width="1.5" />
+        <Hourglass class="h-5 w-5" :stroke-width="2" />
       </button>
       <button
         @click="$emit('update:mode', 'words')"
@@ -15,7 +15,7 @@
         title="words"
         :class="{ 'text-[var(--theme-text-done)]': mode === 'words' }"
       >
-        <Type class="h-5 w-5" :stroke-width="1.5" />
+        <Type class="h-5 w-5" :stroke-width="2" />
       </button>
     </div>
 

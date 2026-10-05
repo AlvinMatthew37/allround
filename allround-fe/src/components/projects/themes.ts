@@ -198,8 +198,8 @@ export const themeDefinitions: ThemeDefinition[] = [
     label: "monochrome-light",
     colors: {
       color1: "#111111",
-      color2: "#666666",
-      color3: "#999999",
+      color2: "#999999",
+      color3: "#666666",
       color4: "#ffffff",
     },
   },

@@ -7,7 +7,7 @@
         title="time"
         :class="{ 'text-[var(--theme-text-done)]': mode === 'time' }"
       >
-        <Timer class="h-5 w-5" :stroke-width="1.5" />
+        <Timer class="h-5 w-5" :stroke-width="2" />
       </button>
       <button
         @click="$emit('update:mode', 'target')"
@@ -15,7 +15,7 @@
         title="target"
         :class="{ 'text-[var(--theme-text-done)]': mode === 'target' }"
       >
-        <Crosshair class="h-5 w-5" :stroke-width="1.5" />
+        <Crosshair class="h-5 w-5" :stroke-width="2" />
       </button>
     </div>
 

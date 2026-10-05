@@ -28,7 +28,7 @@
             class="group focus:bg-[color-mix(in_srgb,var(--theme-text-focus)_12%,transparent)] focus:text-[var(--theme-text-focus)]"
           >
             <router-link to="/projects/typewright" class="sub-nav-link cursor-pointer outline-none flex items-center gap-2 bg-transparent border-none p-0 project-trigger">
-              <Keyboard class="w-4 h-4 text-current transition-colors" :stroke-width="1.5" />
+              <Keyboard class="w-4 h-4 text-current transition-colors" :stroke-width="2" />
               Typewright
             </router-link>
           </DropdownMenuItem>
@@ -36,7 +36,7 @@
             class="group focus:bg-[color-mix(in_srgb,var(--theme-text-focus)_12%,transparent)] focus:text-[var(--theme-text-focus)]"
           >
             <router-link to="/projects/aimlab" class="sub-nav-link cursor-pointer outline-none flex items-center gap-2 bg-transparent border-none p-0 project-trigger">
-              <Target class="w-4 h-4 text-current transition-colors" :stroke-width="1.5" />
+              <Target class="w-4 h-4 text-current transition-colors" :stroke-width="2" />
               Aimlab
             </router-link>
           </DropdownMenuItem>
@@ -44,7 +44,7 @@
             class="group focus:bg-[color-mix(in_srgb,var(--theme-text-focus)_12%,transparent)] focus:text-[var(--theme-text-focus)]"
           >
             <router-link to="/projects/quick-maths" class="sub-nav-link cursor-pointer outline-none flex items-center gap-2 bg-transparent border-none p-0 project-trigger">
-              <Calculator class="w-4 h-4 text-current transition-colors" :stroke-width="1.5" />
+              <Calculator class="w-4 h-4 text-current transition-colors" :stroke-width="2" />
               Quick Maths
             </router-link>
           </DropdownMenuItem>
@@ -63,7 +63,7 @@
         Sign Up
       </button>
       <router-link to="/settings" class="icon-btn" aria-label="Settings" title="Settings">
-        <Settings class="h-[18px] w-[18px]" :stroke-width="1.5" />
+        <Settings class="h-[18px] w-[18px]" :stroke-width="2" />
       </router-link>
     </div>
 
@@ -93,7 +93,7 @@
                   class="mobile-nav-link flex items-center gap-2"
                   @click="toggleMobileMenu"
                 >
-                  <Keyboard class="w-4 h-4 text-current transition-colors" :stroke-width="1.5" />
+                  <Keyboard class="w-4 h-4 text-current transition-colors" :stroke-width="2" />
                   Typewright
                 </router-link>
                 <router-link
@@ -101,7 +101,7 @@
                   class="mobile-nav-link flex items-center gap-2"
                   @click="toggleMobileMenu"
                 >
-                  <Target class="w-4 h-4 text-current transition-colors" :stroke-width="1.5" />
+                  <Target class="w-4 h-4 text-current transition-colors" :stroke-width="2" />
                   Aimlab
                 </router-link>
                 <router-link
@@ -109,7 +109,7 @@
                   class="mobile-nav-link flex items-center gap-2"
                   @click="toggleMobileMenu"
                 >
-                  <Calculator class="w-4 h-4 text-current transition-colors" :stroke-width="1.5" />
+                  <Calculator class="w-4 h-4 text-current transition-colors" :stroke-width="2" />
                   Quick Maths
                 </router-link>
               </div>

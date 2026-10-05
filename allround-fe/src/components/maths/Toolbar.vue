@@ -7,7 +7,7 @@
         title="time"
         :class="{ 'text-[var(--theme-text-done)]': mode === 'time' }"
       >
-        <Timer class="h-5 w-5" :stroke-width="1.5" />
+        <Timer class="h-5 w-5" :stroke-width="2" />
       </button>
       <button
         @click="$emit('update:mode', 'problems')"
@@ -15,7 +15,7 @@
         title="problems"
         :class="{ 'text-[var(--theme-text-done)]': mode === 'problems' }"
       >
-        <Hash class="h-5 w-5" :stroke-width="1.5" />
+        <Hash class="h-5 w-5" :stroke-width="2" />
       </button>
     </div>
 
