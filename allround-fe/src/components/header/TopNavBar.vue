@@ -1,8 +1,10 @@
 <template>
   <div class="bar">
-    <h1 class="logo-text">
-      <span class="text-[var(--theme-text)]">All</span><span class="text-[var(--theme-title)]">round</span>
-    </h1>
+    <router-link to="/" class="nav-link">
+      <h1 class="logo-text">
+        <span class="text-[var(--theme-text)]">All</span><span class="text-[var(--theme-title)]">round</span>
+      </h1>
+    </router-link>
 
     <!-- Mobile Menu Button -->
     <button
@@ -64,12 +66,12 @@
 
     <!-- Desktop Right Content -->
     <div class="right-content hidden lg:flex">
-      <button class="auth-btn">
+      <!-- <button class="auth-btn">
         Login
       </button>
       <button class="auth-btn">
         Sign Up
-      </button>
+      </button> -->
       <router-link to="/settings" class="icon-btn" aria-label="Settings" title="Settings">
         <Settings class="h-[18px] w-[18px]" :stroke-width="2" />
       </router-link>

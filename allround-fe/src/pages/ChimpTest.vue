@@ -1,5 +1,8 @@
 <template>
   <div class="page-shell">
+    <!-- round-complete confirmation flash over the whole screen -->
+    <div v-if="roundFlash" class="screen-flash"></div>
+
     <h1 class="text-2xl font-bold mb-4 text-[var(--theme-title)]">
       CHIMP TEST
     </h1>
@@ -89,6 +92,7 @@ const expected = ref(1);
 const numbers = ref<ChimpNumber[]>([]);
 const roundsCompleted = ref(0);
 const wrongCell = ref<number | null>(null);
+const roundFlash = ref(false);
 
 let transitionTimeout: number | null = null;
 let wrongTimeout: number | null = null;
@@ -99,7 +103,9 @@ function placeNumbers() {
     const j = Math.floor(Math.random() * (i + 1));
     [indices[i], indices[j]] = [indices[j]!, indices[i]!];
   }
-  const chosen = indices.slice(0, count.value).sort((a, b) => a - b);
+  // indices is already shuffled — keep it that way so the numbers
+  // land on scattered cells instead of reading top-left to bottom-right
+  const chosen = indices.slice(0, count.value);
   numbers.value = chosen.map((cell, i) => ({ cell, value: i + 1 }));
 }
 
@@ -113,6 +119,7 @@ function clearTimers() {
     wrongTimeout = null;
   }
   wrongCell.value = null;
+  roundFlash.value = false;
 }
 
 function startGame() {
@@ -154,6 +161,13 @@ function miss(cell: number) {
 }
 
 function roundComplete() {
+  // small confirmation flash before the next level
+  roundFlash.value = true;
+  if (wrongTimeout) clearTimeout(wrongTimeout);
+  wrongTimeout = window.setTimeout(() => {
+    roundFlash.value = false;
+  }, 550);
+
   state.value = "locked";
   if (transitionTimeout) clearTimeout(transitionTimeout);
   transitionTimeout = window.setTimeout(() => {
@@ -223,6 +237,27 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.screen-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  background-color: color-mix(in srgb, var(--theme-text-focus) 18%, transparent);
+  animation: screen-flash 0.55s ease forwards;
+}
+
+@keyframes screen-flash {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 .page-shell {
   display: flex;
   flex-direction: column;

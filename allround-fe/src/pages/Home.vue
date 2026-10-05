@@ -1,42 +1,56 @@
-<script setup lang="ts">
-import { projects } from '../components/projects/projectList';
-
-</script>
-
 <template>
-  <h1 class="pt-4 white title-container">
-    <span class="text-[var(--theme-text)]">[</span>
-    <span class="relative top-1">
-      <span class="caret-block"></span>
-      E
-    </span>
-    <span class="relative top-1">FFCT</span>
-    <span class="text-[var(--theme-text)]">]</span>
-  </h1>
-  
-  <div class="main-content p-4">
-    <div class="projects-flex">
-      <div 
-        v-for="project in projects" 
-        :key="project.name" 
+  <div class="home-shell">
+    <h1 class="pt-4 title-container">
+      <span class="text-[var(--theme-text)]">[</span>
+      <span class="relative top-1">
+        <span class="caret-block"></span>
+        E
+      </span>
+      <span class="relative top-1">FFCT</span>
+      <span class="text-[var(--theme-text)]">]</span>
+    </h1>
+    <p class="tagline">pick your game</p>
+
+    <div class="project-grid">
+      <router-link
+        v-for="project in projects"
+        :key="project.path"
+        :to="project.path"
         class="project-card"
       >
-        <router-link 
-          :to="project.path" 
-          class="project-link block p-4 border-2 border-[var(--theme-text)] hover:border-[var(--theme-text-focus)] hover:bg-[var(--theme-text)] text-[var(--theme-text)] hover:text-[var(--theme-bg)] transition-colors duration-200 h-full"
-        >
-          <h2 class="text-xl font-bold mb-2">{{ project.name }}</h2>
-          <p class="opacity-80">{{ project.description }}</p>
-        </router-link>
-      </div>
+        <div class="card-head">
+          <span class="icon-tile">
+            <component :is="project.icon" class="h-5 w-5" :stroke-width="1.5" />
+          </span>
+          <ArrowUpRight class="arrow h-4 w-4" :stroke-width="1.5" />
+        </div>
+        <h2 class="card-name">{{ project.name }}</h2>
+        <p class="card-desc">{{ project.description }}</p>
+      </router-link>
     </div>
   </div>
 </template>
+<script setup lang="ts">
+import { ArrowUpRight } from "lucide-vue-next";
+import { projects } from "../components/projects/projectList";
+</script>
 
 <style scoped>
-/* -------------------------------- */
-/*   TITLE STYLING                  */
-/* -------------------------------- */
+.home-shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 1rem;
+  min-height: 100%;
+  width: 100%;
+}
+
+.title-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .caret-block {
   position: absolute;
   inset: 0;
@@ -50,63 +64,100 @@ import { projects } from '../components/projects/projectList';
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
-.title-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.tagline {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--theme-text-done);
 }
 
-/* -------------------------------- */
-/*   MAIN CONTENT WRAPPER          */
-/* -------------------------------- */
-.main-content {
-  margin: auto;
-  margin-top: 1rem;
-  min-width: 50%;
-  max-width: 70%;
-  border: 2px solid var(--theme-text);
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* -------------------------------- */
-/*   FLEXBOX GRID (DYNAMIC LAST ROW)
-/* -------------------------------- */
-.projects-flex {
-  display: flex;
-  flex-wrap: wrap;
+.project-grid {
+  margin-top: 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
   gap: 1rem;
+  width: 100%;
+  max-width: 62rem;
 }
 
-/* 3 columns max (large screens) */
 .project-card {
-  flex: 1 1 calc(33.333% - 1rem);
-  display: flex;
-  min-height: 150px;
-  max-height: 200px;
-}
-
-/* 2 columns on tablets */
-@media (max-width: 900px) {
-  .project-card {
-    flex: 1 1 calc(50% - 1rem);
-  }
-}
-
-/* 1 column on mobile */
-@media (max-width: 600px) {
-  .project-card {
-    flex: 1 1 100%;
-  }
-}
-
-/* Keep project link full-height */
-.project-link {
+  position: relative;
+  border: 1px solid color-mix(in srgb, var(--theme-text) 25%, transparent);
+  border-radius: 1rem;
+  background-color: color-mix(in srgb, var(--theme-text) 4%, transparent);
+  padding: 1.25rem 1.1rem 1.35rem;
+  text-decoration: none;
+  color: var(--theme-text);
+  text-align: center;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  align-items: center;
+  gap: 0.35rem;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.project-card:hover {
+  border-color: var(--theme-text-focus);
+  transform: translateY(-2px);
+}
+
+.card-head {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.6rem;
+}
+
+.icon-tile {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.8rem;
+  background-color: color-mix(in srgb, var(--theme-text) 8%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--theme-text);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.project-card:hover .icon-tile {
+  background-color: color-mix(in srgb, var(--theme-text-focus) 16%, transparent);
+  color: var(--theme-text-focus);
+}
+
+.arrow {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: var(--theme-text-done);
+  opacity: 0;
+  transform: translate(-3px, 3px);
+  transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+
+.project-card:hover .arrow {
+  opacity: 1;
+  transform: translate(0, 0);
+  color: var(--theme-text-focus);
+}
+
+.card-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.card-desc {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--theme-text-done);
 }
 </style>
