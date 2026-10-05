@@ -1,85 +1,89 @@
 <template>
   <div class="h-full min-h-0 overflow-hidden bg-[var(--theme-bg)] px-4 text-[var(--theme-text)] sm:px-6 lg:px-8">
-    <div class="mx-auto flex h-full min-h-0 max-w-7xl flex-col items-center gap-4">
-      <div class="mt-1 flex flex-col items-center gap-2 sm:mt-3 sm:gap-3">
-        <h1 class="text-2xl font-extrabold uppercase text-[var(--theme-title)] sm:text-4xl">
-          AIM TRAINER
-        </h1>
+    <div class="mx-auto flex h-full min-h-0 max-w-7xl flex-col">
+      <h1 class="mt-4 text-center text-2xl font-extrabold uppercase text-[var(--theme-title)] sm:mt-6 sm:text-4xl">
+        AIM TRAINER
+      </h1>
 
-        <Toolbar
-          :mode="mode"
-          :time-duration="timeDuration"
-          :target-count="targetCount"
-          @update:mode="setMode"
-          @update:timeDuration="setTimeDuration"
-          @update:targetCount="setTargetCount"
-        />
-      </div>
+      <div class="body-row">
+        <aside class="side-rail">
+          <Toolbar
+            :mode="mode"
+            :time-duration="timeDuration"
+            :target-count="targetCount"
+            @update:mode="setMode"
+            @update:timeDuration="setTimeDuration"
+            @update:targetCount="setTargetCount"
+          />
+        </aside>
 
-      <div class="relative flex min-h-0 flex-1 items-center justify-center">
-        <AimArena
-          class="aim-square"
-          :targets="targets"
-          :disabled="isFinished"
-          @arena-miss="handleMiss"
-          @hit="handleHit"
-        />
+        <div class="arena-col">
+          <div class="relative flex min-h-0 flex-1 items-center justify-center">
+            <AimArena
+              class="aim-square"
+              :targets="targets"
+              :disabled="isFinished"
+              @arena-miss="handleMiss"
+              @hit="handleHit"
+            />
 
-        <div
-          v-if="isFinished"
-          class="finish-overlay absolute inset-0 flex flex-col items-center justify-start px-4 py-6"
-        >
-          <div class="finish-panel">
-            <p class="text-sm font-semibold uppercase tracking-[0.35em] text-[var(--theme-text-done)]">
-              session complete
-            </p>
+            <div
+              v-if="isFinished"
+              class="finish-overlay absolute inset-0 flex flex-col items-center justify-start px-4 py-6"
+            >
+              <div class="finish-panel">
+                <p class="text-sm font-semibold uppercase tracking-[0.35em] text-[var(--theme-text-done)]">
+                  session complete
+                </p>
 
-            <div class="mt-5 grid gap-3 text-left sm:grid-cols-2">
-              <div class="finish-stat">
-                <span>Accuracy</span>
-                <strong>{{ finishAccuracy }}%</strong>
+                <div class="mt-5 grid gap-3 text-left sm:grid-cols-2">
+                  <div class="finish-stat">
+                    <span>Accuracy</span>
+                    <strong>{{ finishAccuracy }}%</strong>
+                  </div>
+                  <div class="finish-stat">
+                    <span>Target hits</span>
+                    <strong>{{ hits }}</strong>
+                  </div>
+                  <div class="finish-stat">
+                    <span>Misses</span>
+                    <strong>{{ misses }}</strong>
+                  </div>
+                  <div class="finish-stat">
+                    <span>Time taken</span>
+                    <strong>{{ formattedElapsedTime }}</strong>
+                  </div>
+                </div>
               </div>
-              <div class="finish-stat">
-                <span>Target hits</span>
-                <strong>{{ hits }}</strong>
-              </div>
-              <div class="finish-stat">
-                <span>Misses</span>
-                <strong>{{ misses }}</strong>
-              </div>
-              <div class="finish-stat">
-                <span>Time taken</span>
-                <strong>{{ formattedElapsedTime }}</strong>
-              </div>
+
+              <button
+                type="button"
+                @click="resetGame"
+                class="mt-6 inline-flex items-center justify-center rounded-lg px-4 py-2 text-[var(--theme-text)] transition hover:bg-[#00000010] hover:text-[var(--theme-text-focus)] focus:bg-[#00000010] focus:text-[var(--theme-text-focus)] focus:outline-none"
+                aria-label="Restart session"
+                title="Restart session"
+              >
+                <RefreshCcw class="h-8 w-8" />
+              </button>
             </div>
           </div>
 
-          <button
-            type="button"
-            @click="resetGame"
-            class="mt-6 inline-flex items-center justify-center rounded-lg px-4 py-2 text-[var(--theme-text)] transition hover:bg-[#00000010] hover:text-[var(--theme-text-focus)] focus:bg-[#00000010] focus:text-[var(--theme-text-focus)] focus:outline-none"
-            aria-label="Restart session"
-            title="Restart session"
-          >
-            <RefreshCcw class="h-8 w-8" />
-          </button>
-        </div>
-      </div>
+          <div v-if="!isFinished" class="mb-1 flex items-center justify-center gap-3">
+            <div class="rounded-full bg-black/10 px-4 py-2 text-sm font-semibold text-[var(--theme-text)]">
+              {{ statusLabel }}
+            </div>
 
-      <div v-if="!isFinished" class="mb-1 flex items-center justify-center gap-3">
-        <div class="rounded-full bg-black/10 px-4 py-2 text-sm font-semibold text-[var(--theme-text)]">
-          {{ statusLabel }}
+            <button
+              type="button"
+              @click="resetGame"
+              class="rounded-lg px-3 py-2 text-[var(--theme-text)] transition hover:bg-[#00000010] hover:text-[var(--theme-text-focus)] focus:bg-[#00000010] focus:text-[var(--theme-text-focus)] focus:outline-none"
+              aria-label="Restart session"
+              title="Restart session"
+            >
+              <RefreshCcw class="h-8 w-8" />
+            </button>
+          </div>
         </div>
-
-        <button
-          type="button"
-          @click="resetGame"
-          class="rounded-lg px-3 py-2 text-[var(--theme-text)] transition hover:bg-[#00000010] hover:text-[var(--theme-text-focus)] focus:bg-[#00000010] focus:text-[var(--theme-text-focus)] focus:outline-none"
-          aria-label="Restart session"
-          title="Restart session"
-        >
-          <RefreshCcw class="h-8 w-8" />
-        </button>
       </div>
     </div>
   </div>
@@ -317,9 +321,46 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.body-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+.arena-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+  /* sidebar | arena | equal spacer — the empty right column
+     counterweights the rail so the arena centers on the page axis */
+  .body-row {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr) 4rem;
+    gap: 2rem;
+  }
+
+  .side-rail {
+    width: 4rem;
+    /* top-leaning like the Typewright rail */
+    align-self: start;
+    margin-top: 3rem;
+  }
+}
+
 .aim-square {
   width: auto;
-  height: min(100%, 48rem);
+  /* slightly smaller than the column so targets don't spawn
+     flush against the title */
+  height: min(90%, 44rem);
   max-width: 100%;
 }
 

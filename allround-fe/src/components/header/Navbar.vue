@@ -34,8 +34,8 @@ import { Button } from "@/components/ui/button";
             <NavigationMenuContent>
               <ul class="grid gap-3 p-4 w-[200px]">
                 <li>
-                  <NavigationMenuLink href="/projects/monkeytype"
-                    >Monkeytype</NavigationMenuLink
+                  <NavigationMenuLink href="/projects/typewright"
+                    >Typewright</NavigationMenuLink
                   >
                 </li>
                 <li>

@@ -21,9 +21,13 @@
           <span class="font-medium">{{ theme.label }}</span>
           <div class="flex gap-2">
             <div
-              v-for="(color, index) in [theme.colors.color1, theme.colors.color2, theme.colors.color3]"
+              v-for="(color, index) in theme.swatch ?? [
+                theme.colors.color1,
+                theme.colors.color2,
+                theme.colors.color3,
+              ]"
               :key="index"
-              class="w-4 h-4 rounded-full"
+              class="h-4 w-4 rounded-full"
               :style="{ backgroundColor: color }"
             ></div>
           </div>

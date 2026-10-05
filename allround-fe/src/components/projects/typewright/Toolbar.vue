@@ -3,18 +3,23 @@
     <div class="mods">
       <button
         @click="$emit('update:mode', 'time')"
+        aria-label="time mode"
+        title="time"
         :class="{ 'text-[var(--theme-text-done)]': mode === 'time' }"
       >
-        time
+        <Hourglass class="h-5 w-5" :stroke-width="1.5" />
       </button>
       <button
         @click="$emit('update:mode', 'words')"
+        aria-label="words mode"
+        title="words"
         :class="{ 'text-[var(--theme-text-done)]': mode === 'words' }"
       >
-        words
+        <Type class="h-5 w-5" :stroke-width="1.5" />
       </button>
     </div>
-    <div class="h-6 w-1 rounded-lg bg-[#00000010] my-2"></div>
+
+    <div class="divider"></div>
 
     <div class="mods" v-if="mode === 'time'">
       <button
@@ -41,6 +46,8 @@
 </template>
 
 <script setup lang="ts">
+import { Hourglass, Type } from "lucide-vue-next";
+
 defineProps<{
   mode: 'time' | 'words';
   wordCount: number;
@@ -55,24 +62,18 @@ defineEmits<{
 </script>
 
 <style scoped>
+/* Vertical sidebar rail on lg+; falls back to the original
+   horizontal pill below that. */
 .toolbar {
   background-color: #00000007;
-  width: fit-content;
-  padding: 0 0.75rem;
-  border-radius: 0.5rem;
+  padding: 1rem 0.5rem;
+  border-radius: 0.75rem;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  margin: auto;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-@media (min-width: 640px) {
-  .toolbar {
-    padding: 0 1rem;
-    gap: 1rem;
-  }
+  gap: 0.75rem;
+  width: fit-content;
+  user-select: none;
 }
 
 .toolbar:hover {
@@ -85,18 +86,13 @@ defineEmits<{
   font-size: 0.875rem;
   font-weight: 600;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 0.25rem;
 }
 
-@media (min-width: 640px) {
-  .mods {
-    font-size: medium;
-  }
-}
-
 .mods button {
-  padding: 0 0.25rem;
-  height: fit-content;
+  padding: 0 0.5rem;
   min-width: 44px;
   min-height: 44px;
   display: flex;
@@ -104,16 +100,59 @@ defineEmits<{
   justify-content: center;
 }
 
-@media (min-width: 640px) {
-  .mods button {
-    min-width: auto;
-    min-height: auto;
-  }
-}
-
 .mods button:hover {
   color: var(--theme-text-done);
   border-radius: 0.25rem;
   transition: all 0.3s ease;
+}
+
+.divider {
+  width: 1.75rem;
+  height: 1px;
+  border-radius: 9999px;
+  background-color: #00000010;
+}
+
+@media (min-width: 1024px) {
+  .toolbar {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1023px) {
+  .toolbar {
+    flex-direction: row;
+    justify-content: center;
+    padding: 0 1rem;
+    border-radius: 0.5rem;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .mods {
+    flex-direction: row;
+    gap: 0.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .toolbar {
+      gap: 1rem;
+    }
+
+    .mods {
+      font-size: medium;
+    }
+
+    .mods button {
+      min-width: auto;
+      min-height: auto;
+      padding: 0 0.25rem;
+    }
+  }
+
+  .divider {
+    width: 1px;
+    height: 1.5rem;
+  }
 }
 </style>

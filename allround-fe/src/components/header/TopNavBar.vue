@@ -1,9 +1,11 @@
 <template>
   <div class="bar">
-    <h1 class="logo-text">Allround</h1>
-    
+    <h1 class="logo-text">
+      <span class="text-[var(--theme-text)]">All</span><span class="text-[var(--theme-title)]">round</span>
+    </h1>
+
     <!-- Mobile Menu Button -->
-    <button 
+    <button
       @click="toggleMobileMenu"
       class="mobile-menu-btn md:hidden"
       aria-label="Toggle menu"
@@ -18,20 +20,32 @@
 
       <DropdownMenu>
         <DropdownMenuTrigger
-          class="nav-link cursor-pointer outline-none flex items-center gap-1 bg-transparent border-none p-0 project-trigger"
-          >Projects<ChevronDown class="w-4 h-4" />
+          class="nav-link cursor-pointer outline-none flex items-center gap-1.5 bg-transparent border-none p-0 project-trigger"
+          >Projects<ChevronDown class="w-3.5 h-3.5" />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem class="group">
-            <router-link to="/projects/monkeytype" class="sub-nav-link cursor-pointer outline-none flex items-center gap-2 bg-transparent border-none p-0 project-trigger">
+          <DropdownMenuItem
+            class="group focus:bg-[color-mix(in_srgb,var(--theme-text-focus)_12%,transparent)] focus:text-[var(--theme-text-focus)]"
+          >
+            <router-link to="/projects/typewright" class="sub-nav-link cursor-pointer outline-none flex items-center gap-2 bg-transparent border-none p-0 project-trigger">
               <Keyboard class="w-4 h-4 text-current transition-colors" :stroke-width="1.5" />
-              Monkeytype
+              Typewright
             </router-link>
           </DropdownMenuItem>
-          <DropdownMenuItem class="group">
+          <DropdownMenuItem
+            class="group focus:bg-[color-mix(in_srgb,var(--theme-text-focus)_12%,transparent)] focus:text-[var(--theme-text-focus)]"
+          >
             <router-link to="/projects/aimlab" class="sub-nav-link cursor-pointer outline-none flex items-center gap-2 bg-transparent border-none p-0 project-trigger">
               <Target class="w-4 h-4 text-current transition-colors" :stroke-width="1.5" />
               Aimlab
+            </router-link>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            class="group focus:bg-[color-mix(in_srgb,var(--theme-text-focus)_12%,transparent)] focus:text-[var(--theme-text-focus)]"
+          >
+            <router-link to="/projects/quick-maths" class="sub-nav-link cursor-pointer outline-none flex items-center gap-2 bg-transparent border-none p-0 project-trigger">
+              <Calculator class="w-4 h-4 text-current transition-colors" :stroke-width="1.5" />
+              Quick Maths
             </router-link>
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -42,17 +56,15 @@
 
     <!-- Desktop Right Content -->
     <div class="right-content hidden lg:flex">
-      <router-link to="/settings" class="nav-link">Settings</router-link>
-      <button
-        class="auth-btn bg-[var(--theme-text)] text-[var(--theme-bg)] hover:opacity-90 transition-opacity"
-      >
+      <button class="auth-btn">
         Login
       </button>
-      <button
-        class="auth-btn bg-[var(--theme-text)] text-[var(--theme-bg)] hover:opacity-90 transition-opacity"
-      >
+      <button class="auth-btn">
         Sign Up
       </button>
+      <router-link to="/settings" class="icon-btn" aria-label="Settings" title="Settings">
+        <Settings class="h-[18px] w-[18px]" :stroke-width="1.5" />
+      </router-link>
     </div>
 
     <!-- Mobile Menu Overlay -->
@@ -62,9 +74,9 @@
           <router-link to="/" class="mobile-nav-link" @click="toggleMobileMenu">
             Home
           </router-link>
-          
+
           <div class="mobile-dropdown">
-            <button 
+            <button
               @click="projectsOpen = !projectsOpen"
               class="mobile-nav-link"
             >
@@ -76,21 +88,29 @@
             </button>
             <Transition name="expand">
               <div v-if="projectsOpen" class="mobile-submenu px-4 group flex flex-col gap-1">
-                <router-link 
-                  to="/projects/monkeytype" 
+                <router-link
+                  to="/projects/typewright"
                   class="mobile-nav-link flex items-center gap-2"
                   @click="toggleMobileMenu"
                 >
                   <Keyboard class="w-4 h-4 text-current transition-colors" :stroke-width="1.5" />
-                  Monkeytype
+                  Typewright
                 </router-link>
-                <router-link 
-                  to="/projects/aimlab" 
+                <router-link
+                  to="/projects/aimlab"
                   class="mobile-nav-link flex items-center gap-2"
                   @click="toggleMobileMenu"
                 >
                   <Target class="w-4 h-4 text-current transition-colors" :stroke-width="1.5" />
                   Aimlab
+                </router-link>
+                <router-link
+                  to="/projects/quick-maths"
+                  class="mobile-nav-link flex items-center gap-2"
+                  @click="toggleMobileMenu"
+                >
+                  <Calculator class="w-4 h-4 text-current transition-colors" :stroke-width="1.5" />
+                  Quick Maths
                 </router-link>
               </div>
             </Transition>
@@ -99,16 +119,16 @@
           <router-link to="/about" class="mobile-nav-link" @click="toggleMobileMenu">
             About
           </router-link>
-          
+
           <router-link to="/settings" class="mobile-nav-link" @click="toggleMobileMenu">
             Settings
           </router-link>
 
           <div class="mobile-auth-buttons">
-            <button class="auth-btn bg-[var(--theme-text)] text-[var(--theme-bg)]">
+            <button class="auth-btn">
               Login
             </button>
-            <button class="auth-btn bg-[var(--theme-text)] text-[var(--theme-bg)]">
+            <button class="auth-btn">
               Sign Up
             </button>
           </div>
@@ -126,7 +146,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, ChevronRight, Keyboard, Menu, Target, X } from "lucide-vue-next";
+import { Calculator, ChevronDown, ChevronRight, Keyboard, Menu, Settings, Target, X } from "lucide-vue-next";
 
 const mobileMenuOpen = ref(false);
 const projectsOpen = ref(false);
@@ -140,28 +160,39 @@ const toggleMobileMenu = () => {
 <style scoped>
 .logo-text {
   font-size: clamp(1.5rem, 4vw, 2rem);
+  /* tight line box so the glyphs sit truly centered in the bar */
+  line-height: 1;
 }
 
 .auth-btn {
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
+  padding: 0.4rem 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--theme-text) 35%, transparent);
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--theme-text);
   white-space: nowrap;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.2s, border-color 0.2s;
 }
 
-@media (min-width: 768px) {
-  .auth-btn {
-    font-size: 1rem;
-  }
+.auth-btn:hover {
+  color: var(--theme-text-focus);
+  border-color: var(--theme-text-focus);
 }
 
 .bar {
   width: 100%;
-  min-height: 3rem;
-  border-bottom: 1px solid var(--theme-title);
+  min-height: 3.5rem;
+  /* subtle surface tint: mixes toward the text color so it lightens
+     on dark themes and darkens on light ones — separation without a line */
+  background-color: color-mix(in srgb, var(--theme-bg) 94%, var(--theme-text) 6%);
+  border-radius: 0.75rem;
   display: flex;
   align-items: center;
-  padding: 10px 20px;
+  padding: 10px 24px;
   justify-content: space-between;
   gap: 1rem;
   position: relative;
@@ -175,15 +206,13 @@ const toggleMobileMenu = () => {
 
 .content {
   color: var(--theme-text);
-  font-weight: 600;
   justify-content: left;
   align-items: center;
 }
 
 .right-content {
   color: var(--theme-text);
-  font-weight: 600;
-  gap: 1rem;
+  gap: 0.875rem;
   justify-content: right;
   align-items: center;
 }
@@ -200,20 +229,14 @@ const toggleMobileMenu = () => {
   text-decoration: none;
   transition: color 0.2s;
   padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-}
-
-@media (min-width: 1024px) {
-  .nav-link {
-    font-size: 1rem;
-  }
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 .nav-link:hover {
   color: var(--theme-text-focus);
-  background-color: color-mix(in srgb, var(--theme-text-focus) 12%, transparent);
-  border-radius: 0.5rem;
-  transition: all 0.5s;
 }
 
 .sub-nav-link {
@@ -221,8 +244,31 @@ const toggleMobileMenu = () => {
   text-decoration: none;
   transition: color 0.2s;
   padding: 0.5rem 1rem;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.sub-nav-link:hover {
+  color: var(--theme-text-focus);
+}
+
+.icon-btn {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--theme-text) 30%, transparent);
+  border-radius: 9999px;
+  color: var(--theme-text);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.icon-btn:hover {
+  color: var(--theme-text-focus);
+  border-color: var(--theme-text-focus);
 }
 
 .project-trigger {
@@ -316,19 +362,6 @@ const toggleMobileMenu = () => {
 }
 
 /* Transitions */
-/* .slide-enter-active,
-.slide-leave-active {
-  transition: transform 0.3s ease;
-}
-
-.slide-enter-from {
-  transform: translateX(-100%);
-}
-
-.slide-leave-to {
-  transform: translateX(-100%);
-} */
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s ease;

@@ -1,65 +1,70 @@
 <template>
-  <div class="p-6 flex flex-col items-center">
-    <div class="theme-select hidden"></div>
+  <div class="page-shell">
     <h1 class="text-2xl font-bold mb-4 text-[var(--theme-title)]">
-      MONKEYTYPE
+      TYPEWRIGHT
     </h1>
 
-    <Toolbar
-      :mode="mode"
-      :word-count="wordCount"
-      :time-duration="timeDuration"
-      @update:mode="setMode"
-      @update:wordCount="setWordCount"
-      @update:timeDuration="setTimeDuration"
-    />
-
-    <GameContainer
-      ref="gameContainerRef"
-      :test-words="testWords"
-      :curr-word-index="currWordIndex"
-      :curr-letter-index="currLetterIndex"
-      :is-finished="isFinished"
-      :caret-style="caretStyle"
-    >
-      <template #overlay>
-        <ResultOverlay
-          v-if="isFinished"
-          :wpm="wpm"
-          :accuracy="accuracy"
-          :cl="CL"
-          :tl="TL"
-          :cw="CW"
-          :time-taken="timeTaken"
+    <div class="body-row">
+      <aside class="side-rail">
+        <Toolbar
+          :mode="mode"
+          :word-count="wordCount"
+          :time-duration="timeDuration"
+          @update:mode="setMode"
+          @update:wordCount="setWordCount"
+          @update:timeDuration="setTimeDuration"
         />
-      </template>
-    </GameContainer>
+      </aside>
 
-    <LiveStats
-      v-if="startTime && !isFinished"
-      :mode="mode"
-      :wpm="wpm"
-      :curr-word-index="currWordIndex"
-      :word-count="wordCount"
-      :time-remaining="timeRemaining"
-    />
+      <div class="game-col">
+        <GameContainer
+          ref="gameContainerRef"
+          :test-words="testWords"
+          :curr-word-index="currWordIndex"
+          :curr-letter-index="currLetterIndex"
+          :is-finished="isFinished"
+          :caret-style="caretStyle"
+        >
+          <template #overlay>
+            <ResultOverlay
+              v-if="isFinished"
+              :wpm="wpm"
+              :accuracy="accuracy"
+              :cl="CL"
+              :tl="TL"
+              :cw="CW"
+              :time-taken="timeTaken"
+            />
+          </template>
+        </GameContainer>
 
-    <button
-      @click="refresh()"
-      class="px-4 py-2 text-[var(--theme-text)] hover:text-[var(--theme-text-focus)] hover:bg-[#00000010] focus:outline-none focus:text-[var(--theme-text-focus)] focus:bg-[#00000010] font-semibold rounded-lg transition mt-2"
-    >
-      <RefreshCcw class="w-8 h-8" />
-    </button>
+        <LiveStats
+          v-if="startTime && !isFinished"
+          :mode="mode"
+          :wpm="wpm"
+          :curr-word-index="currWordIndex"
+          :word-count="wordCount"
+          :time-remaining="timeRemaining"
+        />
+
+        <button
+          @click="refresh()"
+          class="px-4 py-2 text-[var(--theme-text)] hover:text-[var(--theme-text-focus)] hover:bg-[#00000010] focus:outline-none focus:text-[var(--theme-text-focus)] focus:bg-[#00000010] font-semibold rounded-lg transition mt-2"
+        >
+          <RefreshCcw class="w-8 h-8" />
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, nextTick } from "vue";
 import { RefreshCcw } from "lucide-vue-next";
-import Toolbar from "../components/projects/monkeytype/Toolbar.vue";
-import GameContainer from "../components/projects/monkeytype/GameContainer.vue";
-import LiveStats from "../components/projects/monkeytype/LiveStats.vue";
-import ResultOverlay from "../components/projects/monkeytype/ResultOverlay.vue";
+import Toolbar from "../components/projects/typewright/Toolbar.vue";
+import GameContainer from "../components/projects/typewright/GameContainer.vue";
+import LiveStats from "../components/projects/typewright/LiveStats.vue";
+import ResultOverlay from "../components/projects/typewright/ResultOverlay.vue";
 
 type Letter = { char: string; correct: boolean | null };
 type WordObject = { word: string; letters: Letter[]; correct: boolean | null };
@@ -87,10 +92,21 @@ const caretStyle = ref<"line" | "block">("block");
 const gameContainerRef = ref<InstanceType<typeof GameContainer> | null>(null);
 
 async function fetchWordBank() {
-  const res = await fetch("https://raw.githubusercontent.com/monkeytypegame/monkeytype/master/frontend/static/languages/english.json");
-  if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-  const data = await res.json();
-  wordBank.value = data.words || data;
+  const url =
+    "https://raw.githubusercontent.com/monkeytypegame/monkeytype/master/frontend/static/languages/english.json";
+
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const data = await res.json();
+      wordBank.value = data.words || data;
+      return;
+    } catch {
+      // raw.githubusercontent is occasionally flaky; back off and retry
+      await new Promise((resolve) => setTimeout(resolve, 400 * attempt));
+    }
+  }
 }
 
 function generateTestWords(count = 10) {
@@ -129,20 +145,20 @@ function refresh() {
 
 function setMode(newMode: "time" | "words") {
   mode.value = newMode;
-  localStorage.setItem("monkeytype-mode", newMode);
+  localStorage.setItem("typewright-mode", newMode);
   refresh();
 }
 
 function setWordCount(count: number) {
   wordCount.value = count;
-  localStorage.setItem("monkeytype-word-count", count.toString());
+  localStorage.setItem("typewright-word-count", count.toString());
   refresh();
 }
 
 function setTimeDuration(duration: number) {
   timeDuration.value = duration;
   timeRemaining.value = duration;
-  localStorage.setItem("monkeytype-time-duration", duration.toString());
+  localStorage.setItem("typewright-time-duration", duration.toString());
   refresh();
 }
 
@@ -300,12 +316,12 @@ function handleKeydown(e: KeyboardEvent) {
 onMounted(async () => {
   await fetchWordBank();
 
-  const savedMode = localStorage.getItem("monkeytype-mode");
+  const savedMode = localStorage.getItem("typewright-mode");
   if (savedMode === "time" || savedMode === "words") {
     mode.value = savedMode;
   }
 
-  const savedCount = localStorage.getItem("monkeytype-word-count");
+  const savedCount = localStorage.getItem("typewright-word-count");
   if (savedCount) {
     const count = parseInt(savedCount, 10);
     if (!isNaN(count)) {
@@ -313,7 +329,7 @@ onMounted(async () => {
     }
   }
 
-  const savedDuration = localStorage.getItem("monkeytype-time-duration");
+  const savedDuration = localStorage.getItem("typewright-time-duration");
   if (savedDuration) {
     const duration = parseInt(savedDuration, 10);
     if (!isNaN(duration)) {
@@ -340,9 +356,74 @@ p {
   color: var(--theme-text);
 }
 
-.theme-select button {
-  padding: 0 0.5rem;
-  margin: 0 0.5rem;
-  border-radius: 0.25rem;
+.page-shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 1rem;
+  min-height: 100%;
+  width: 100%;
+  /* same centered content width as the Aimlab page so the sidebar
+     rail sits at the same x on both */
+  max-width: calc(80rem + 2rem);
+  margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+  .page-shell {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    max-width: calc(80rem + 3rem);
+  }
+}
+
+.body-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.game-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+  /* sidebar | content | equal spacer — the empty right column
+     counterweights the rail so the content centers on the page axis;
+     flex: 1 fills the height below the title so the game block
+     sits vertically centered in the remaining space */
+  .page-shell {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    max-width: calc(80rem + 4rem);
+  }
+
+  .body-row {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr) 4rem;
+    gap: 2rem;
+    /* stretch (not the centered base value) so the game column fills
+       the row height and the refresh can pin to its bottom */
+    align-items: stretch;
+  }
+
+  .side-rail {
+    width: 4rem;
+    /* line the rail up with the typing area, both leaning to the top */
+    margin-top: 3rem;
+  }
+
+  /* pin the refresh to the bottom of the column so the live stats
+     appearing mid-run never shift the words or the button */
+  .game-col > button {
+    margin-top: auto;
+  }
 }
 </style>

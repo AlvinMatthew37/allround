@@ -10,12 +10,12 @@
         <Timer class="h-5 w-5" :stroke-width="1.5" />
       </button>
       <button
-        @click="$emit('update:mode', 'target')"
-        aria-label="target mode"
-        title="target"
-        :class="{ 'text-[var(--theme-text-done)]': mode === 'target' }"
+        @click="$emit('update:mode', 'problems')"
+        aria-label="problems mode"
+        title="problems"
+        :class="{ 'text-[var(--theme-text-done)]': mode === 'problems' }"
       >
-        <Crosshair class="h-5 w-5" :stroke-width="1.5" />
+        <Hash class="h-5 w-5" :stroke-width="1.5" />
       </button>
     </div>
 
@@ -34,10 +34,10 @@
 
     <div class="mods" v-else>
       <button
-        v-for="count in [1, 15, 30, 50, 100]"
+        v-for="count in [10, 25, 50, 100]"
         :key="count"
-        @click="$emit('update:targetCount', count)"
-        :class="{ 'text-[var(--theme-text-done)]': targetCount === count }"
+        @click="$emit('update:problemCount', count)"
+        :class="{ 'text-[var(--theme-text-done)]': problemCount === count }"
       >
         {{ count }}
       </button>
@@ -46,18 +46,18 @@
 </template>
 
 <script setup lang="ts">
-import { Crosshair, Timer } from "lucide-vue-next";
+import { Hash, Timer } from "lucide-vue-next";
 
 defineProps<{
-  mode: "time" | "target";
+  mode: "time" | "problems";
   timeDuration: number;
-  targetCount: number;
+  problemCount: number;
 }>();
 
 defineEmits<{
-  (e: "update:mode", mode: "time" | "target"): void;
+  (e: "update:mode", mode: "time" | "problems"): void;
   (e: "update:timeDuration", duration: number): void;
-  (e: "update:targetCount", count: number): void;
+  (e: "update:problemCount", count: number): void;
 }>();
 </script>
 
@@ -84,7 +84,7 @@ defineEmits<{
 .mods {
   color: var(--theme-text);
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -98,21 +98,19 @@ defineEmits<{
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 1;
-  cursor: pointer;
 }
 
 .mods button:hover {
   color: var(--theme-text-done);
   border-radius: 0.25rem;
-  transition: color 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .divider {
   width: 1.75rem;
   height: 1px;
   border-radius: 9999px;
-  background-color: #00000014;
+  background-color: #00000010;
 }
 
 @media (min-width: 1024px) {
@@ -147,8 +145,8 @@ defineEmits<{
 
     .mods button {
       min-width: auto;
-      min-height: 2rem;
-      padding: 0.2rem 0.35rem;
+      min-height: auto;
+      padding: 0 0.25rem;
     }
   }
 

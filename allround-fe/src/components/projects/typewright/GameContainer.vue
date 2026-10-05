@@ -136,7 +136,10 @@ defineExpose({
   grid-area: stack;
   font-size: 1rem;
   line-height: 1.75rem;
-  height: 8rem;
+  /* cap the visible window; short word lists shrink to fit so the
+     block stays vertically balanced (the scrollTop window still
+     works when content exceeds the cap) */
+  max-height: 8rem;
   overflow: hidden;
   margin: 2rem 0;
   display: flex;
@@ -152,7 +155,7 @@ defineExpose({
   .textbox {
     font-size: 1.25rem;
     line-height: 2rem;
-    height: 10rem;
+    max-height: 10rem;
     margin: 2.5rem 0;
   }
 }
@@ -161,7 +164,7 @@ defineExpose({
   .textbox {
     font-size: 1.5rem;
     line-height: 2.5rem;
-    height: 12rem;
+    max-height: 12rem;
     margin: 3rem 0;
   }
 }
