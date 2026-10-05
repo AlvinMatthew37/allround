@@ -48,6 +48,14 @@
               Quick Maths
             </router-link>
           </DropdownMenuItem>
+          <DropdownMenuItem
+            class="group focus:bg-[color-mix(in_srgb,var(--theme-text-focus)_12%,transparent)] focus:text-[var(--theme-text-focus)]"
+          >
+            <router-link to="/projects/chimp-test" class="sub-nav-link cursor-pointer outline-none flex items-center gap-2 bg-transparent border-none p-0 project-trigger">
+              <Brain class="w-4 h-4 text-current transition-colors" :stroke-width="2" />
+              Chimp Test
+            </router-link>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
@@ -112,6 +120,14 @@
                   <Calculator class="w-4 h-4 text-current transition-colors" :stroke-width="2" />
                   Quick Maths
                 </router-link>
+                <router-link
+                  to="/projects/chimp-test"
+                  class="mobile-nav-link flex items-center gap-2"
+                  @click="toggleMobileMenu"
+                >
+                  <Brain class="w-4 h-4 text-current transition-colors" :stroke-width="2" />
+                  Chimp Test
+                </router-link>
               </div>
             </Transition>
           </div>
@@ -146,7 +162,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Calculator, ChevronDown, ChevronRight, Keyboard, Menu, Settings, Target, X } from "lucide-vue-next";
+import { Brain, Calculator, ChevronDown, ChevronRight, Keyboard, Menu, Settings, Target, X } from "lucide-vue-next";
 
 const mobileMenuOpen = ref(false);
 const projectsOpen = ref(false);

@@ -20,4 +20,9 @@ export const projects: Project[] = [
     path: "/projects/quick-maths",
     description: "Solve as many math problems as you can.",
   },
+  {
+    name: "Chimp Test",
+    path: "/projects/chimp-test",
+    description: "Memorize the numbers and click them in order.",
+  },
 ];
